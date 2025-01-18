@@ -1,0 +1,22 @@
+#!/bin/bash
+# Bulk User Creation from a File
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 userlist.txt"
+    exit 1
+fi
+
+USERLIST=$1
+if [ ! -f "$USERLIST" ]; then
+    echo "File $USERLIST not found!"
+    exit 2
+fi
+
+while IFS= read -r username
+do
+    if id "$username" &>/dev/null; then
+        echo "User $username already exists."
+    else
+        sudo useradd "$username" && echo "$username:Password123" | sudo chpasswd
+        echo "User $username created successfully."
+    fi
+done < "$USERLIST"
