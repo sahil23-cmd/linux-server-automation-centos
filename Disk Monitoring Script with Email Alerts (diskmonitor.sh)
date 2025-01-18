@@ -1,0 +1,7 @@
+#!/bin/bash
+THRESHOLD=80
+DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}' | sed 's/%//')
+
+if [ "$DISK_USAGE" -gt "$THRESHOLD" ]; then
+    echo "Warning: Disk usage is above $THRESHOLD%. Current usage: $DISK_USAGE%" | mail -s "Disk Usage Alert" admin@example.com
+fi
